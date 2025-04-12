@@ -51,23 +51,19 @@ export default function OpenCamera() {
             name: "garbage.jpg",
             type: "image/jpeg",
         } as any); 
-
-        router.push("/dashboard");
     
-        // try {
-        //     const response = await fetch("http://your-backend-url/upload", {
-        //         method: "POST",
-        //         body: formData,
-        //         headers: {
-        //             "Content-Type": "multipart/form-data",
-        //         },
-        //     });
+        try {
+            const response = await fetch("https://119d-131-247-226-109.ngrok-free.app/", {
+                method: "POST",
+                body: formData,
+            });
     
-        //     const result = await response.json();
-        //     console.log("Upload result:", result);
-        // } catch (err) {
-        //     console.error("Upload failed:", err);
-        // }
+            const result = await response.json();
+            console.log("Upload result:", result);
+            router.push('/dashboard');
+        } catch (err) {
+            console.error("Upload failed:", err);
+        }
     };
 
     const retakePhoto = () => {
