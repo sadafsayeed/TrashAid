@@ -2,12 +2,22 @@ import { TouchableOpacity, View, Text, Button, Image, StyleSheet } from "react-n
 import { useState, useEffect, useRef } from "react";
 import { CameraView, CameraType, useCameraPermissions, Camera } from "expo-camera";
 import * as FileSystem from "expo-file-system";
+import { Buffer } from 'buffer';
+import {useRouter} from "expo-router";
+
 
 export default function OpenCamera() {
+    const router = useRouter();
     const [permission, requestPermission] = useCameraPermissions();
     const [facing, setFacing] = useState<CameraType>("back");
     const [photoUri, setPhotoUri] = useState<string | null>(null);
     const cameraRef = useRef<Camera | null>(null);
+
+    function base64ToBlob(base64: string, type = 'application/pdf') {
+        const binary = Buffer.from(base64, 'base64');
+        const blob = new Blob([binary], { type });
+        return blob;
+      }
 
     useEffect(() => {
         if (!permission) {
@@ -24,29 +34,58 @@ export default function OpenCamera() {
 
     const takePhoto = async () => {
         if (cameraRef.current) {
-            const photo = await cameraRef.current.takePictureAsync();
+            const photo = await cameraRef.current.takePictureAsync({quality:0.9});
             setPhotoUri(photo.uri);
-            // sendImageToBackend(photo.uri);
         }
     };
 
-    // const sendImageToBackend = async(uri:string) =>{
-    //     const formData.append('file',{
-    //         uri,
-    //         name: "garbage.jpg",
-    //         type:
-    //     })
-    // }
+    const sendImageToBackend = async(uri: string | null) =>{
+        if (!uri) {
+            console.warn("No photo URI to upload.");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append('file', {
+            uri,
+            name: "garbage.jpg",
+            type: "image/jpeg",
+        } as any); 
+
+        router.push("/dashboard");
+    
+        // try {
+        //     const response = await fetch("http://your-backend-url/upload", {
+        //         method: "POST",
+        //         body: formData,
+        //         headers: {
+        //             "Content-Type": "multipart/form-data",
+        //         },
+        //     });
+    
+        //     const result = await response.json();
+        //     console.log("Upload result:", result);
+        // } catch (err) {
+        //     console.error("Upload failed:", err);
+        // }
+    };
 
     const retakePhoto = () => {
         setPhotoUri(null);
     };
 
+    const submitPressed = ()=>{
+        sendImageToBackend(photoUri);
+    }
+
     if (photoUri) {
         return (
             <View style={styles.previewContainer}>
                 <Image source={{ uri: photoUri }} style={styles.previewImage} />
-                <Button title="Retake Photo" onPress={retakePhoto} />
+                <View style={styles.controls}>
+                    <Button title="Retake Photo" onPress={retakePhoto} />
+                    <Button title="Submit" onPress={submitPressed}/>
+                </View>
             </View>
         );
     }
