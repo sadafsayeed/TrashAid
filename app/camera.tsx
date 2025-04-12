@@ -44,12 +44,24 @@ export default function OpenCamera() {
             console.warn("No photo URI to upload.");
             return;
         }
+
+        const fileExtension = uri.split('.').pop()?.toLowerCase();
+
+        const mimeTypeMap: { [key: string]: string } = {
+            jpg: "image/jpeg",
+            jpeg: "image/jpeg",
+            png: "image/png",
+            heic: "image/heic", 
+        };
+
+        const mimeType = mimeTypeMap[fileExtension ?? ""] || "image/jpeg"; // default fallback
+        const fileName = `photo.${fileExtension || 'jpg'}`;
     
         const formData = new FormData();
         formData.append('file', {
             uri,
-            name: "garbage.jpg",
-            type: "image/jpeg",
+            name: "fileName",
+            type: "mimeType",
         } as any); 
     
         try {

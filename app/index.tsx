@@ -1,10 +1,15 @@
 import { Text, View, Button, StyleSheet } from "react-native";
 import {useRouter} from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
+import { useFonts, PlayfairDisplay_400Regular } from '@expo-google-fonts/playfair-display';
+
 
 
 export default function Index() {
   const router = useRouter();
+  const [fontsLoaded] = useFonts({
+    PlayfairDisplay_400Regular,
+  });
   function goToCamera(){
     router.push('/camera');
   };
