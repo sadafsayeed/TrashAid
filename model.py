@@ -13,7 +13,7 @@ def encode_image(image_path):
 
 
 # Path to your image
-image_path = "3.jpg"
+image_path = "images/3.jpg"
 
 # Getting the Base64 string
 base64_image = encode_image(image_path)
@@ -25,7 +25,7 @@ response = client.responses.create(
         {
             "role": "user",
             "content": [
-                { "type": "input_text", "text": "The following image is an image of a object that was thrown in the trashcan. Can you identify which of the following classes it belongs to? The classes: recyclable, compost, landfill. Your respond should ONLY be the object detected and the class it belongs to. Nothing else and no formatting. Example: 'banana peel, compost'. Thank you" },
+                { "type": "input_text", "text": """The following image shows an object (or multiple objects) that was thrown into a trashcan. Identify each object and classify it into one of the following classes: recyclable, compost, or landfill. Your response should ONLY be a JSON array where each object has two fields: "object" (the name of the item) and "class" (its classification). No explanations, no formatting, and no extra text. Example: [{"object": "half eaten apple", "class": "compost"}, {"object": "candy wrapper", "class": "recyclable"}]""" },
                 {
                     "type": "input_image",
                     "image_url": f"data:image/jpeg;base64,{base64_image}",
