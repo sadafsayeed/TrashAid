@@ -72,7 +72,11 @@ export default function OpenCamera() {
     
             const result = await response.json();
             console.log("Upload result:", result);
-            router.push('/dashboard');
+            router.push({pathname: '/dashboard',
+                params: {
+                    classification: result.classification,
+                }
+            },);
         } catch (err) {
             console.error("Upload failed:", err);
         }

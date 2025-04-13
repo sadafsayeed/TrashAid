@@ -1,50 +1,62 @@
 from flask import Flask, request, jsonify
+import base64
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
 
-# 1) Optional: Hook into Flask’s request cycle before requests hit your routes
-@app.before_request
-def before_request_logging():
-    print("=== BEFORE REQUEST LOGGING ===")
-    print(f"Method: {request.method}")
-    print(f"Path: {request.path}")
-    print(f"Content Length: {request.content_length}")
-    # If you want to see the raw request body (not always recommended for large files):
-    # if request.method == 'POST':
-    #     raw_data = request.get_data()
-    #     print(f"Raw POST data (first 500 bytes): {raw_data[:500]}")
-
-# @app.route('/')
-# def hello():
-#     return "Flask is working"
-
 @app.route('/classify', methods=['POST'])
 def classify():
-    print("=== INSIDE /classify ROUTE ===")
+    try:
+        print("=== INSIDE /classify ROUTE ===")
+        if 'file' not in request.files:
+            print("No file in request.files")
+            return jsonify({"error": "No image uploaded"}), 400
 
-    # 2) Dump out the Headers
-    print("=== HEADERS ===")
-    print(request.headers)
+        image_file = request.files['file']
+        print(f"✅ Received image: {image_file.filename}")
 
-    # 3) Dump out the POST form fields (if any)
-    print("=== FORM FIELDS ===")
-    print(request.form)
+        # 1. Save to a temp path
+        temp_path = "temp_upload.jpg"
+        image_file.save(temp_path)
 
-    # 4) Dump out the uploaded files
-    print("=== FILES ===")
-    print(request.files)
+        # 2. Encode the image
+        with open(temp_path, "rb") as f:
+            base64_image = base64.b64encode(f.read()).decode("utf-8")
 
-    # 5) Specifically check if we have 'file'
-    if 'file' not in request.files:
-        print("No file in request.files")
-        return jsonify({"error": "No image uploaded"}), 400
+        # 3. Send to OpenAI
+        response = client.responses.create(
+            model="gpt-4o-mini",
+            input=[
+                {
+                    "role": "user",
+                    "content": [
+                        {
+                            "type": "input_text",
+                            "text": "The following image is an image of a object that was thrown in the trashcan. Can you identify which of the following classes it belongs to? The classes: recyclable, compost, landfill. Your respond should ONLY be the object detected and the class it belongs to. Nothing else and no formatting. Example: 'banana peel, compost'. Thank you"
+                        },
+                        {
+                            "type": "input_image",
+                            "image_url": f"data:image/jpeg;base64,{base64_image}"
+                        },
+                    ]
+                }
+            ]
+        )
 
-    image_file = request.files['file']
-    print(f"✅ Received image: {image_file.filename}")
+        result_text = response.output_text
+        print("🧠 LLM Output:", result_text)
 
-    # 6) Just send something back in JSON so your frontend can parse it
-    return jsonify({"message": "Image received!"})
+        # 4. Return to frontend
+        return jsonify({"classification": result_text})
+
+    except Exception as e:
+        print("🔥 ERROR:", e)
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # If you want Flask to log more verbosely, you can set debug=True
     app.run(debug=True, host="0.0.0.0", port=5050)
