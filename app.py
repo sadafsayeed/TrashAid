@@ -26,11 +26,12 @@ def classify():
 
         # 2. Construct Gemini request
         prompt = (
-            "The following image is an image of a object that was thrown in the trashcan. "
-            "Can you identify which of the following classes it belongs to? "
-            "The classes: recyclable, compost, landfill. "
-            "Your response should ONLY be the object detected and the class it belongs to. "
-            "Nothing else and no formatting. Example: 'banana peel, compost'. Thank you."
+            "You are given an image of an item thrown in a trashcan. "
+            "Only describe the most visible or largest item. "
+            "Identify which of the following classes it belongs to: recyclable, compost, or landfill. "
+            "Respond with a single JSON object containing: the name of the item, its classification, and estimated CO2 emission reduced if recycled. "
+            "No extra words, no formatting, no new lines. "
+            "Example: {\"name\": \"plastic bottle\", \"class\": \"recyclable\", \"emission\": \"0.1kg\"}"
         )
 
         response = client.models.generate_content(
