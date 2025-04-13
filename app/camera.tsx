@@ -60,12 +60,12 @@ export default function OpenCamera() {
         const formData = new FormData();
         formData.append('file', {
             uri,
-            name: "fileName",
-            type: "mimeType",
+            name: fileName,
+            type: mimeType,
         } as any); 
     
         try {
-            const response = await fetch("https://119d-131-247-226-109.ngrok-free.app/", {
+            const response = await fetch("http://10.226.109.112:5050/classify", {
                 method: "POST",
                 body: formData,
             });
@@ -83,6 +83,7 @@ export default function OpenCamera() {
     };
 
     const submitPressed = ()=>{
+        console.log(photoUri);
         sendImageToBackend(photoUri);
     }
 

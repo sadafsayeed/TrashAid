@@ -18,7 +18,7 @@ def before_request_logging():
 # def hello():
 #     return "Flask is working"
 
-@app.route('/', methods=['POST'])
+@app.route('/classify', methods=['POST'])
 def classify():
     print("=== INSIDE /classify ROUTE ===")
 
@@ -47,4 +47,4 @@ def classify():
 
 if __name__ == '__main__':
     # If you want Flask to log more verbosely, you can set debug=True
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5050)
