@@ -12,7 +12,7 @@
 # # Try to connect to serial (commented out for now)
 # # try:
 # #     ser = serial.Serial(SERIAL_PORT, BAUD_RATE, timeout=1)
-# #     print(f"✅ Connected to Arduino on {SERIAL_PORT}")
+# #     print(f"Connected to Arduino on {SERIAL_PORT}")
 # # except Exception as e:
 # #     print(f" Could not open serial port: {e}")
 # #     ser = None
@@ -29,9 +29,9 @@
 #         # Simulated serial send
 #         # if ser and ser.is_open:
 #         #     ser.write(json_str.encode())
-#         #     print("📨 Sent to Arduino:", json_str)
+#         #     print("Sent to Arduino:", json_str)
 #         # else:
-#         #     print("⚠️ Serial port not open!")
+#         #     print("Serial port not open!")
 
 #         print("Simulated sending to Arduino!!!! IT WORKS YAUSYDUSAYYAYAYAYAY", json_str)
 
@@ -74,14 +74,14 @@ def receive_data():
 
         with open(filepath, 'w') as json_file:
             json_file.write(json_str)
-            print(f"✅ JSON file created: {filepath}")
+            print(f"JSON file created: {filepath}")
 
         # Simulated serial send
         # if ser and ser.is_open:
         #     ser.write(json_str.encode())
-        #     print("📨 Sent to Arduino:", json_str)
+        #     print("Sent to Arduino:", json_str)
         # else:
-        #     print("⚠️ Serial port not open!")
+        #     print("Serial port not open!")
 
         print("Simulated sending to Arduino!!!! IT WORKS YAUSYDUSAYYAYAYAYAY", json_str)
 
