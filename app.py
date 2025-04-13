@@ -64,7 +64,7 @@ def classify():
 def forward_to_arduino_laptop(result_text):
     try:
         data = {"classification": result_text}
-        response = requests.post("http://10.226.109.112:6000/receive", json=data) # Chage this IP with farhan's IP
+        response = requests.post("http://10.226.77.111:6000/receive", json=data) # Chage this IP with farhan's IP
         print(f"Sent to Arduino Laptop: {response.status_code}")
     except Exception as e:
         print(f"Could not forward to Arduino Laptop: {e}")

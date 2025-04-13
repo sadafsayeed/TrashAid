@@ -65,7 +65,7 @@ export default function OpenCamera() {
         } as any); 
     
         try {
-            const response = await fetch("http://10.226.109.112:5050/classify", {
+            const response = await fetch("http://10.226.77.111/classify", {
                 method: "POST",
                 body: formData,
             });
