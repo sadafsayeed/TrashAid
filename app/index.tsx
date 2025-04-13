@@ -1,21 +1,16 @@
 import { Text, View, Button, StyleSheet } from "react-native";
 import {useRouter} from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
-import { useFonts, PlayfairDisplay_400Regular } from '@expo-google-fonts/playfair-display';
-
+import { useLayoutEffect } from 'react';
+import { useNavigation } from '@react-navigation/native'; // Required for header config
 
 
 export default function Index() {
   const router = useRouter();
-  const [fontsLoaded] = useFonts({
-    PlayfairDisplay_400Regular,
-  });
   function goToCamera(){
     router.push('/camera');
   };
   
-
-
   return (
     <LinearGradient
     colors={['rgb(142, 154, 110)','rgb(176, 200, 162)']}
