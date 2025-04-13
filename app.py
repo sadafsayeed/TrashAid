@@ -1,4 +1,5 @@
 from flask import Flask, request, jsonify
+import requests
 import base64
 import os
 from openai import OpenAI
@@ -18,7 +19,7 @@ def classify():
             return jsonify({"error": "No image uploaded"}), 400
 
         image_file = request.files['file']
-        print(f"✅ Received image: {image_file.filename}")
+        print(f"Received image: {image_file.filename}")
 
         # 1. Save to a temp path
         temp_path = "temp_upload.jpg"
@@ -48,15 +49,26 @@ def classify():
             ]
         )
 
-        result_text = response.output_text
+        result_text = response.output_text.strip()
         print("🧠 LLM Output:", result_text)
+
+        forward_to_arduino_laptop(result_text)
 
         # 4. Return to frontend
         return jsonify({"classification": result_text})
 
     except Exception as e:
-        print("🔥 ERROR:", e)
+        print("ERROR:", e)
         return jsonify({"error": str(e)}), 500
+
+def forward_to_arduino_laptop(result_text):
+    try:
+        data = {"classification": result_text}
+        response = requests.post("http://10.226.109.112:6000/receive", json=data) # Chage this IP with farhan's IP
+        print(f"Sent to Arduino Laptop: {response.status_code}")
+    except Exception as e:
+        print(f"Could not forward to Arduino Laptop: {e}")
+
 
 if __name__ == '__main__':
     app.run(debug=True, host="0.0.0.0", port=5050)
