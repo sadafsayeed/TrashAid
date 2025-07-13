@@ -1,50 +1,69 @@
-# Welcome to your Expo app 👋
+🧠 **Inspiration**: Recycling can drastically reduce carbon emissions, save energy, and help our planet—but the current system places too much responsibility on users to manually sort their waste. That’s inconvenient, error-prone, and not always feasible. We wanted to eliminate that friction by building a smart trash can that handles sorting automatically and educates users on their impact, making recycling effortless and meaningful.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+💡**What it does**: TrashAid is an intelligent trash can that automatically classifies and sorts waste into the correct bin: recyclable, compost, or landfill. Here's how it works:
 
-## Get started
+The user places an item on the trash lid.
 
-1. Install dependencies
+A camera captures an image and sends it to Gemini, our computer vision model.
 
-   ```bash
-   npm install
-   ```
+Gemini identifies the type of waste and sends the result in a JSON payload to an Arduino.
 
-2. Start the app
+The Arduino lights up an LED to indicate the category and rotates a chute system to align with the appropriate bin.
 
-   ```bash
-    npx expo start
-   ```
+The trash lid opens, allowing the waste to be dropped in correctly.
 
-In the output, you'll find options to open the app in a
+A connected display shows the user:
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+How much CO₂ and water is saved
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+Which organization sponsored the smart can (great for awareness + ad revenue)
 
-## Get a fresh project
+This makes waste sorting automatic, educational, and sustainable.
 
-When you're ready, run:
+🛠️ **How we built it**: Built a mobile app to simulate the camera and screen interface of the trash can.
 
-```bash
-npm run reset-project
-```
+Used Gemini to classify waste items via image recognition.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Sent classification data to Arduino using serial communication and a lightweight JSON format.
 
-## Learn more
+Programmed the Arduino to:
 
-To learn more about developing your project with Expo, look at the following resources:
+Light the appropriate LED
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Rotate the internal sorting chute mechanism
 
-## Join the community
+Open the trash lid
 
-Join our community of developers creating universal apps.
+Connected a display to show feedback on environmental impact and sponsor branding.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+⚙️ **Challenges we ran into**: Our Arduino lacked WiFi and had only 32KB of storage, which made remote communication and local processing difficult.
+
+Had to rely on real-time serial communication with a local machine to send classification results.
+
+Mechanically, coordinating the rotation of the chutes and opening the lid required precise synchronization to ensure waste was routed correctly.
+
+🏆 **Accomplishments that we're proud of**: Successfully integrated computer vision with physical hardware to make a functional prototype.
+
+Designed a complete system—software, electronics, mechanics, and UX—that works seamlessly.
+
+Built a smart trash can that not only sorts waste but also educates users and helps generate sustainable ad revenue through sponsorships.
+
+📚 **What we learned**: How to build around hardware limitations and optimize microcontroller communication.
+
+Effective use of Gemini AI for image classification.
+
+Designing real-time systems that bridge software and physical components.
+
+Importance of user engagement through feedback and education.
+
+🚀 **What's next for TrashAid**: We’re excited to take TrashAid to the next level. Here’s what’s next-
+
+Replace simulation with a fully functional prototype (onboard camera, display, and smarter hardware).
+
+Upgrade to a WiFi-enabled microcontroller with more storage and processing power.
+
+Expand our training dataset for better classification accuracy.
+
+Implement a user reward system for responsible disposal.
+
+Partner with more sponsors to scale deployments in campuses, parks, malls, and public venues.
