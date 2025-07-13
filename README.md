@@ -1,4 +1,5 @@
-**TrashAid**
+# **TrashAid**
+
 Recycling reduces carbon emissions, but people still have to think before tossing trash. Our project flips the script: the trash can does the thinking, so humans don’t have to.
 
 
