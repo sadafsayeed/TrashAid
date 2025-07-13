@@ -1,3 +1,7 @@
+**TrashAid**
+Recycling reduces carbon emissions, but people still have to think before tossing trash. Our project flips the script: the trash can does the thinking, so humans don’t have to.
+
+
 🧠 **Inspiration**: Recycling can drastically reduce carbon emissions, save energy, and help our planet—but the current system places too much responsibility on users to manually sort their waste. That’s inconvenient, error-prone, and not always feasible. We wanted to eliminate that friction by building a smart trash can that handles sorting automatically and educates users on their impact, making recycling effortless and meaningful.
 
 💡**What it does**: TrashAid is an intelligent trash can that automatically classifies and sorts waste into the correct bin: recyclable, compost, or landfill. Here's how it works:
